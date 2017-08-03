@@ -20,7 +20,7 @@ RUN set -ex; \
 	if ! grep -q stretch /etc/apt/sources.list; then \
 # only add stretch if we're not already building from within stretch
 		{ \
-			echo 'deb http://deb.debian.org/debian stretch main'; \
+			echo 'deb http://ftp2.cn.debian.org/debian/ stretch main'; \
 		} > /etc/apt/sources.list.d/stretch.list; \
 		{ \
 # add a negative "Pin-Priority" so that we never ever get packages from stretch unless we explicitly request them
@@ -34,6 +34,8 @@ RUN set -ex; \
 			echo 'Pin-Priority: 990'; \
 		} > /etc/apt/preferences.d/stretch-openssl; \
 	fi
+ADD hosts /etc/hosts
+ADD sources.list /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		libapr1 \
 		openssl="$OPENSSL_VERSION" \
